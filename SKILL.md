@@ -3,7 +3,7 @@ name: flowershow
 description: Help users publish and manage Flowershow sites. Use when the user wants to publish Markdown, HTML pages (reports, dashboards, AI-generated pages), notes, a digital garden, or documents (docx, pdf, pptx, converted to Markdown first) as a website, or when they want to configure their site (config.json, custom CSS, custom domain, comments, search, etc.), regardless of how they publish — via the fl CLI, a GitHub repository, or the Obsidian plugin.
 metadata:
   author: flowershow
-  version: "1.1.0"
+  version: "1.2.0"
 ---
 
 # Flowershow
