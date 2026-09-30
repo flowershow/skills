@@ -1,12 +1,14 @@
 ---
 name: flowershow
-description: Help users publish and manage Flowershow sites. Use when the user wants to publish notes, a digital garden, or any markdown content to Flowershow, or when they want to configure their site (config.json, custom CSS, custom domain, comments, search, etc.), regardless of how they publish — via the fl CLI, a GitHub repository, or the Obsidian plugin.
+description: Help users publish and manage Flowershow sites. Use when the user wants to publish Markdown, HTML pages (reports, dashboards, AI-generated pages), notes, a digital garden, or documents (docx, pdf, pptx, converted to Markdown first) as a website, or when they want to configure their site (config.json, custom CSS, custom domain, comments, search, etc.), regardless of how they publish — via the fl CLI, a GitHub repository, or the Obsidian plugin.
 metadata:
   author: flowershow
   version: "1.1.0"
 ---
 
 # Flowershow
+
+Flowershow turns a folder of files into a website. Markdown (`.md`, `.mdx`) is rendered with the site's theme and navigation. HTML (`.html`) is a first-class publish target: it is served exactly as written, with the CSS, JavaScript, JSON and images it references. Both can live side by side in one folder.
 
 ## Detect publishing method first
 
@@ -18,7 +20,7 @@ Before doing anything else, establish how the user publishes their site. There a
 | **GitHub** | Site is connected to a GitHub repo; Flowershow builds on push | No |
 | **Obsidian plugin** | User publishes from inside an Obsidian vault | No |
 
-If it's not obvious from context, ask: *"Do you publish from a local folder using the fl CLI, from a GitHub repository, or from Obsidian?"*
+If it's not obvious from context, ask: *"Do you publish from a local folder using the fl CLI, from a GitHub repository, or from Obsidian?"* A user who just wants "a URL for this file" and has no site yet should use the CLI.
 
 - For **GitHub** and **Obsidian** users: skip all CLI sections below. Work only with `config.json`, `custom.css`, and the dashboard. Provide instructions they can follow directly in their repo or vault.
 - For **CLI** users: proceed with the full skill.
@@ -27,12 +29,31 @@ If it's not obvious from context, ask: *"Do you publish from a local folder usin
 
 ## CLI only — skip for GitHub/Obsidian users
 
-### Quick start
+### Install the CLI
+
+The CLI is a single Go binary called `fl` (also installed as `flowershow`). Check for it first:
 
 ```bash
-fl whoami          # 1. check auth (see Authentication if not logged in)
-fl --yes ./notes   # 2. publish
+fl --version
 ```
+
+If it's missing, install it (macOS / Linux):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/flowershow/flowershow/main/apps/cli/install.sh | sh
+```
+
+The script installs to `/usr/local/bin` and uses `sudo` if that isn't writable. If you can't run `sudo` (no password prompt available to you), install to a user directory instead, choosing the archive for the platform (`darwin` or `linux`, `arm64` or `amd64`):
+
+```bash
+mkdir -p ~/.local/bin
+curl -fsSL https://github.com/flowershow/flowershow/releases/latest/download/fl_darwin_arm64.tar.gz | tar xz -C ~/.local/bin fl
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+On Windows, download `fl_windows_amd64.zip` or `fl_windows_arm64.zip` from https://github.com/flowershow/flowershow/releases/latest and put `fl.exe` on the `PATH`.
+
+**Do not** install the npm packages `flowershow` or `@flowershow/publish`. They are the old, deprecated Node CLI.
 
 ### Authentication
 
@@ -40,10 +61,12 @@ fl --yes ./notes   # 2. publish
 fl whoami
 ```
 
+It prints `Logged in as: <username>` or `Not authenticated`. The exit code is 0 either way, so read the output.
+
 If not authenticated:
-1. Run `fl login` and capture its output
-2. Show the user the URL and code it prints — e.g. "Please visit https://... and enter code XXXX"
-3. Wait for the command to complete
+1. Run `fl login`. It prints a URL like `https://cloud.flowershow.app/cli/verify?code=ABCD-1234`, then waits (up to 15 minutes) for the user to approve. Run it in the background or redirect its output to a file so you can read the URL while it waits, e.g. `fl login > /tmp/fl-login.txt 2>&1 &`.
+2. Show the user the URL and ask them to open it and approve.
+3. When they say they're done, confirm with `fl whoami`.
 
 No account yet? Direct the user to https://cloud.flowershow.app to sign up first.
 
@@ -52,12 +75,16 @@ No account yet? Direct the user to https://cloud.flowershow.app to sign up first
 ```bash
 fl --yes ./my-notes                    # publish a folder
 fl --yes ./note.md                     # publish a single file
+fl --yes ./report.html                 # publish a single HTML page
 fl --name my-site --yes ./my-notes     # set a custom site name on first publish
 ```
 
-- Always use `--yes` — it skips the interactive confirmation prompt
-- Site names default to the folder/file name, saved in `.flowershow` for future runs (folders only)
-- Re-running on the same path syncs only new/modified/deleted files (delta sync)
+- `--yes` skips the interactive site-name prompt. Use it, but check the name first (next point).
+- **Check for name clashes before a first publish.** The site name defaults to the folder or file name (`./notes` → `notes`). If a site with that name already exists, `fl` treats the path as that site and syncs to it, **deleting that site's files that aren't in your folder**, with no prompt. So before publishing a path for the first time (a folder without a `.flowershow` file, or any single file), run `fl list` and, if the name is taken by a different site, pick a unique name with `--name`.
+- After the first publish the name is saved in `.flowershow` inside the folder (folders only). Re-running on the same path syncs only new, modified and deleted files.
+- The site URL is printed at the end, in the form `https://<site-name>-<username>.flowershow.me`. Pages can take a few seconds to appear after the CLI reports success; if the first request 404s, wait and retry before debugging.
+- `fl` can exit with code 0 even when it fails (e.g. when not logged in). Check the output for `✗ Error` rather than relying on the exit code.
+- Multiple paths (`fl a.md b.md`) are flattened to their file names, so `css/style.css` is published as `/style.css`. To keep a directory structure (anything with relative links to subfolders), publish the folder.
 
 ### Site management
 
@@ -68,30 +95,73 @@ fl settings --name <site-name>   # explicit site name
 fl delete --yes <site-name>      # delete a site
 ```
 
-Settings include: privacy mode, comments, search, GitHub connection, custom domain.
+Settings include: plan, privacy mode, comments, search, GitHub connection, custom domain.
+
+`fl delete` is permanent. Only delete a site the user has explicitly named.
+
+---
+
+## Publishing HTML
+
+HTML is a first-class target. When you or the user have an HTML page (a report, dashboard, slide deck, interactive explainer), publish it as-is; don't convert it to Markdown.
+
+- `.html` files are served byte-for-byte, with no Flowershow theme, navbar, footer or `custom.css`. Scripts run, and relative links to `.css`, `.js`, `.json`, images and other files in the same folder work.
+- For a page with separate CSS/JS/data files, put them all in one folder and publish the folder: `fl --yes ./my-report`. Keep references relative (`css/style.css`, not `/Users/...` or `file://`).
+- A self-contained single file (inline `<style>` and `<script>`) can be published on its own: `fl --yes ./report.html`.
+- HTML URLs keep the extension: `https://<site>/about.html`, not `/about`. Link between pages with `about.html`. A site's root redirects to `index.html` (or to the file, for a single-file site).
+- HTML and Markdown can be mixed in one folder: `.md` pages get the site layout, `.html` pages are served raw.
+- If you change a CSS, JS or image file and republish, the old version can stay cached for several minutes. If a change must show immediately, rename the file (e.g. `style.v2.css`) and update the reference.
+
+If the user wants an HTML section *inside* a normal site page (keeping the navbar and theme), write it in a `.md` file instead. Rules: no blank lines inside an HTML block, don't indent HTML by 4+ spaces (it becomes a code block), `<style>` blocks work, `<script>` tags in Markdown pages do **not** run (use a standalone `.html` file for anything interactive). Add `layout: plain` in frontmatter to drop the default typography styles. See https://flowershow.app/docs/agents/html.md for details.
+
+## Publishing other documents (docx, pdf, pptx, …)
+
+Flowershow publishes Markdown and HTML, not Office files or PDFs. If the user wants to publish a `.docx`, `.pptx`, `.xlsx`, `.odt`, `.epub`, `.ipynb` or `.pdf`, convert it to Markdown locally first, then publish the resulting folder:
+
+1. Make a folder for the site, e.g. `./report-site/`.
+2. Convert, keeping images in an `assets` folder:
+   - **pandoc** (docx, pptx, xlsx, odt, epub, ipynb):
+     ```bash
+     cd report-site
+     pandoc ../report.docx -t gfm-raw_html --wrap=none --extract-media=assets -o index.md
+     ```
+     Images land in `assets/media/` and are linked from the Markdown.
+   - **markitdown** (also handles pdf): `pip install 'markitdown[all]'`, then `markitdown ../report.pdf -o report-site/index.md`. It extracts text and tables, not images; if images matter, extract them separately (e.g. `pdfimages -png report.pdf report-site/assets/img`) and add links.
+3. Add a frontmatter `title:` if the document has no top-level heading, and skim the result for broken tables or stray formatting.
+4. Publish: `fl --yes ./report-site` (after the name-clash check).
+
+If neither tool is installed, ask before installing one (`brew install pandoc`, `apt install pandoc`, or `pip install 'markitdown[all]'`). For a document that is mostly layout (a designed PDF, a slide deck), ask whether the user would rather publish it as HTML.
 
 ---
 
 ## Site configuration — all publishing methods
 
-Add a `config.json` to the root of the published folder to configure the site. Values override dashboard settings and are version-controlled with the content.
+Add a `config.json` to the root of the published folder to configure the site (title, navbar, footer, social links, theme, sidebar, search, and more). Values override dashboard settings and are version-controlled with the content.
 
 > **Never guess config.json options.** Fetch the authoritative schema first:
 > ```
 > fetch https://flowershow.app/docs/reference/config-file.md
 > ```
+> For themes, fetch https://flowershow.app/docs/reference/themes.md (only the theme names listed there exist).
 
-> **Some features are premium-only.** Even if a feature is correctly configured in `config.json`, it will silently have no effect unless the user is on a paid plan. If a configured feature isn't working, check whether the site has a premium subscription before debugging the config.
+When setting up or changing config:
+1. Check for an existing `config.json` first. If there is one, read it and update it rather than replacing it.
+2. Ask about one area at a time (basics, theme, navbar, footer, features), not everything at once.
+3. Only include fields the user has given values for. No empty arrays or placeholder values.
+4. Show the user the result and ask if they want to adjust anything, then republish (CLI) or tell them to commit/sync (GitHub/Obsidian).
+
+> **Some features are premium-only.** Even if a feature is correctly configured in `config.json`, it will silently have no effect unless the site is on the Premium plan (`fl settings` shows the plan). If a configured feature isn't working, check the plan before debugging the config. `config-file.md` marks premium keys with ⭐️; treat that as authoritative.
 >
-> Premium `config.json` keys:
+> Premium `config.json` keys (as of this skill version):
 > - `enableSearch` — full-text search
-> - `showBuiltWithButton: false` — hide "Built with Flowershow" branding
+> - `showBuiltWithButton` — on Premium the "Built with Flowershow" badge is hidden by default; set `true` to show it. On Free it is always shown.
 > - `favicon` — custom favicon
-> - `image` — social share image
->
+> - `image` — default social share image (the page-level `image` frontmatter field is premium too)
+> - `head` — custom HTML injected into `<head>` (scripts, meta tags)
+
 ## Custom styles
 
-Add a `custom.css` to the root folder to override visual styles. Flowershow uses CSS cascade layers, so rules in `custom.css` win without `!important`.
+Add a `custom.css` to the root folder to override visual styles. Flowershow uses CSS cascade layers, so rules in `custom.css` win without `!important`. `custom.css` applies to Markdown pages, not to standalone `.html` files.
 
 > **Never guess CSS variable names.** Fetch the reference first:
 > ```
@@ -117,7 +187,7 @@ When in doubt, over-explain rather than under-explain. A user who already knows 
 
 ## Dashboard only
 
-These require https://flowershow.app — not available in config files or the CLI:
+These require the dashboard at https://cloud.flowershow.app (`fl list` prints a direct dashboard link for each site) — not available in config files or the CLI:
 - Setting or changing a site password ⭐ premium
 - Billing and plan management
 - Connecting a GitHub repository
