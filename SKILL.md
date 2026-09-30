@@ -61,7 +61,7 @@ On Windows, download `fl_windows_amd64.zip` or `fl_windows_arm64.zip` from https
 fl whoami
 ```
 
-It prints `Logged in as: <username>` or `Not authenticated`. The exit code is 0 either way, so read the output.
+It prints `Logged in as: <username>` and exits 0, or `Not authenticated` and exits 1 (fl 2.4.0+; older versions exit 0 either way, so read the output).
 
 If not authenticated:
 1. Run `fl login`. It prints a URL like `https://cloud.flowershow.app/cli/verify?code=ABCD-1234`, then waits (up to 15 minutes) for the user to approve. Run it in the background or redirect its output to a file so you can read the URL while it waits, e.g. `fl login > /tmp/fl-login.txt 2>&1 &`.
@@ -79,11 +79,11 @@ fl --yes ./report.html                 # publish a single HTML page
 fl --name my-site --yes ./my-notes     # set a custom site name on first publish
 ```
 
-- `--yes` skips the interactive site-name prompt. Use it, but check the name first (next point).
-- **Check for name clashes before a first publish.** The site name defaults to the folder or file name (`./notes` → `notes`). If a site with that name already exists, `fl` treats the path as that site and syncs to it, **deleting that site's files that aren't in your folder**, with no prompt. So before publishing a path for the first time (a folder without a `.flowershow` file, or any single file), run `fl list` and, if the name is taken by a different site, pick a unique name with `--name`.
+- `--yes` skips the new-site name prompt. It never overwrites an existing site.
+- **Name clashes on first publish.** The site name defaults to the folder or file name (`./notes` → `notes`). If a site with that name already exists and the path isn't linked to it, fl 2.4.0+ refuses with `A site named ... already exists` and exits 1. Then either pick a new name with `--name <new-name>`, or, only if the user explicitly wants to replace that site, use `--overwrite` (it syncs to the site and **deletes its files that aren't in the local path**). Run `fl list` first if unsure. Older versions (check `fl --version`) silently sync into the existing site, so update fl or check `fl list` before a first publish. Re-publishing a single file into its existing site also needs `--overwrite`, since single files aren't linked.
 - After the first publish the name is saved in `.flowershow` inside the folder (folders only). Re-running on the same path syncs only new, modified and deleted files.
 - The site URL is printed at the end, in the form `https://<site-name>-<username>.flowershow.me`. Pages can take a few seconds to appear after the CLI reports success; if the first request 404s, wait and retry before debugging.
-- `fl` can exit with code 0 even when it fails (e.g. when not logged in). Check the output for `✗ Error` rather than relying on the exit code.
+- fl 2.4.0+ exits non-zero on failure, so you can rely on the exit code. Older versions can exit 0 on errors; there, check the output for `✗ Error`.
 - Multiple paths (`fl a.md b.md`) are flattened to their file names, so `css/style.css` is published as `/style.css`. To keep a directory structure (anything with relative links to subfolders), publish the folder.
 
 ### Site management
