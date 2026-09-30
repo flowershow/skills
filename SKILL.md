@@ -70,6 +70,18 @@ If not authenticated:
 
 No account yet? Direct the user to https://cloud.flowershow.app to sign up first.
 
+**Just want a link now, without an account?** If the user isn't logged in and only wants something online quickly, publish anonymously (needs fl 2.5.0+; check with `fl --version` and upgrade with the install script above if older):
+
+```bash
+fl --anon --yes ./my-report
+```
+
+It prints `✓ Published (no account): <live URL>` and `Claim it to keep it (expires <date>): <claim URL>`. **Paste both to the user verbatim**, and tell them the site expires in 7 days unless they open the claim link (and sign in or sign up) to keep it. Re-running on the same folder updates the same URL; the claim token is saved in the folder's `.flowershow`, so don't commit that file to a public repo. Limits: 200 files, 50 MB. Anonymous sites aren't indexed by search engines.
+
+Prefer `fl login` for anything the user wants to keep or put on a custom domain. `fl` never publishes anonymously unless you pass `--anon`.
+
+**Cloud or headless agents** (no browser to approve `fl login`): have the user create a personal access token at https://cloud.flowershow.app/tokens and set it as `FLOWERSHOW_TOKEN=fs_pat_…` in the environment, then run `fl` as usual. Never print or commit the token.
+
 ### Publishing content
 
 ```bash
