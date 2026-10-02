@@ -1,5 +1,11 @@
 # flowershow-skills
 
+## 1.3.0
+
+### Minor Changes
+
+- [#4](https://github.com/flowershow/skills/pull/4) [`d3c51b8`](https://github.com/flowershow/skills/commit/d3c51b8fc3884a4c3ce78552db156c3a7452c21d) Thanks [@rufuspollock](https://github.com/rufuspollock)! - Add anonymous publishing (flowershow/flowershow, bead flowershow-z4f): when the user isn't logged in and just wants a link, use `fl --anon --yes <path>` and paste the claim link to them verbatim (the site expires in 7 days unless claimed). Prefer `fl login` for anything to keep or use with a custom domain. Cloud and headless agents can authenticate with `FLOWERSHOW_TOKEN`. Requires fl 2.5.0+ for `--anon`.
+
 ## 1.2.0
 
 ### Minor Changes
