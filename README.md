@@ -36,6 +36,7 @@ For the Claude apps (claude.ai, desktop, mobile) and ChatGPT, upload the skill i
 Once installed, your assistant can:
 
 - Install and log in to the `fl` CLI, then publish a folder or file, list, update, and delete sites
+- Publish without an account (`fl --anon`) when you just want a link now, and hand you the claim link
 - Publish HTML pages as-is (with their CSS, JS and data files) alongside Markdown
 - Convert documents (docx, pptx, pdf, …) to Markdown and publish them
 - Configure your site with `config.json` and style it with `custom.css`
