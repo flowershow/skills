@@ -1,5 +1,11 @@
 # flowershow-skills
 
+## 1.4.0
+
+### Minor Changes
+
+- [#6](https://github.com/flowershow/skills/pull/6) [`a1acf18`](https://github.com/flowershow/skills/commit/a1acf182c7c849f32fa2468efba34c34ce9738d4) Thanks [@rufuspollock](https://github.com/rufuspollock)! - Point chat apps that can't run `fl` (claude.ai, ChatGPT) to the Flowershow connector (beta, flowershow/flowershow bead flowershow-5fv): use its `publish` tool when available, otherwise tell the user to add `https://flowershow.app/api/mcp` in their connector settings.
+
 ## 1.3.0
 
 ### Minor Changes
