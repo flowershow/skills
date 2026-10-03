@@ -25,6 +25,8 @@ If it's not obvious from context, ask: *"Do you publish from a local folder usin
 - For **GitHub** and **Obsidian** users: skip all CLI sections below. Work only with `config.json`, `custom.css`, and the dashboard. Provide instructions they can follow directly in their repo or vault.
 - For **CLI** users: proceed with the full skill.
 
+**Can't run `fl`?** In chat apps such as claude.ai and ChatGPT, the sandbox often has no network access, so `fl` can't install or publish. If the Flowershow connector is available to you (a `publish` tool from Flowershow), use it instead: it publishes the files you pass and returns a live URL and a claim link, with no account needed. Paste both links to the user verbatim. If it isn't available, tell the user they can add it in their app's connector settings with the URL `https://flowershow.app/api/mcp` (beta, see https://flowershow.app/docs/agents/mcp), or prepare the files for them to publish with `fl` themselves.
+
 ---
 
 ## CLI only — skip for GitHub/Obsidian users
