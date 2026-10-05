@@ -8,15 +8,13 @@ This is the only maintained Flowershow skill repo. The older `flowershow/agent-s
 
 ## Installation
 
-**With Node.js** (Claude Code, Codex, Cursor and 50+ other agents; installs for every agent it detects):
+The skill is a single file, [`SKILL.md`](https://raw.githubusercontent.com/flowershow/skills/main/SKILL.md). No Node.js or npm needed: installing it just means putting that file in your agent's skills folder.
 
-```bash
-npx skills add flowershow/skills --global
-```
+**Easiest: ask your agent** (Claude Code, Codex, Cursor or any agent with a terminal):
 
-Add `-y -a claude-code -a codex -a cursor` to skip the prompts and choose agents explicitly.
+> Install the Flowershow skill from https://raw.githubusercontent.com/flowershow/skills/main/SKILL.md into your skills folder.
 
-**Without Node.js:** the skill is one file. Download it into your agent's skills folder:
+**Or with one command:**
 
 ```bash
 # Claude Code
@@ -30,6 +28,8 @@ mkdir -p ~/.cursor/skills/flowershow && curl -fsSL https://raw.githubusercontent
 ```
 
 For the Claude apps (claude.ai, desktop, mobile) and ChatGPT, upload the skill in the app's skills settings. See [flowershow.app/docs/agents/supported-agents](https://flowershow.app/docs/agents/supported-agents) for per-agent steps.
+
+**Optional, if you already use Node.js:** `npx skills add flowershow/skills --global` installs it for every agent it detects (add `-y -a claude-code -a codex -a cursor` to skip the prompts).
 
 ## What the skill does
 
