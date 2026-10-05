@@ -1,5 +1,11 @@
 # flowershow-skills
 
+## 1.5.0
+
+### Minor Changes
+
+- [#8](https://github.com/flowershow/skills/pull/8) [`7687fc3`](https://github.com/flowershow/skills/commit/7687fc3a4a772b5c7bba26f420603d106a069446) Thanks [@rufuspollock](https://github.com/rufuspollock)! - Get reviewer feedback with annotations: publish with `fl --annotations`, read notes with `fl annotations pull`, apply them and `fl annotations resolve`.
+
 ## 1.4.0
 
 ### Minor Changes
