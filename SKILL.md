@@ -1,6 +1,6 @@
 ---
 name: flowershow
-description: Help users publish and manage Flowershow sites. Use when the user wants to publish Markdown, HTML pages (reports, dashboards, AI-generated pages), notes, a digital garden, or documents (docx, pdf, pptx, converted to Markdown first) as a website, or when they want to configure their site (config.json, custom CSS, custom domain, comments, search, etc.), regardless of how they publish — via the fl CLI, a GitHub repository, or the Obsidian plugin.
+description: Help users publish and manage Flowershow sites. Use when the user wants to publish Markdown, HTML pages (reports, dashboards, AI-generated pages), notes, a digital garden, or documents (docx, pdf, pptx, converted to Markdown first) as a website, or when they want to add a blog or listing page (blog index, project grid, archive, team page), or configure their site (config.json, custom CSS, custom domain, comments, search, etc.), regardless of how they publish — via the fl CLI, a GitHub repository, or the Obsidian plugin.
 metadata:
   author: flowershow
   version: "1.5.0"
@@ -161,6 +161,26 @@ Flowershow publishes Markdown and HTML, not Office files or PDFs. If the user wa
 4. Publish: `fl --yes ./report-site` (after the name-clash check).
 
 If neither tool is installed, ask before installing one (`brew install pandoc`, `apt install pandoc`, or `pip install 'markitdown[all]'`). For a document that is mostly layout (a designed PDF, a slide deck), ask whether the user would rather publish it as HTML.
+
+## Listing pages (blog index, grids, archives, team pages)
+
+Flowershow builds listing pages from a folder of pages in plain Markdown: fenced blocks and frontmatter, no MDX needed, works in `.md`. **Don't use the `<List />` MDX component: it is legacy.**
+
+- **Zero-config blog:** a folder named `blog` or `posts` (any depth) lists itself, newest first, 20 per page. A `README.md`/`index.md` (or Obsidian folder note) with only prose gets the list under it. Add `list: false` to that page's frontmatter if it already links posts by hand.
+- **Whole page:** `layout: list` in a folder's `README.md` lists that folder; options go in a `list:` map in the same frontmatter.
+- **Anywhere on a page:** a ```` ```blog ```` block lists `blog/`; a ```` ```list ```` block needs `from: <folder>` (relative to the site root, or `./sub` for the page's folder).
+
+````markdown
+```blog
+view: grid
+featured: 1
+limit: 6
+```
+````
+
+Views (`view:`): `list` (default, rows with a thumbnail), `grid` (cards), `compact` (date + title, grouped by year on list pages; archives), `people` (portraits from `avatar`/`role`/`bio`; team pages, one page per person). Other keys: `sort` (default `date desc`), `limit` (no pagination; teasers), `pageSize`, `where` (field: value filters), `fields` (which frontmatter fills `title`, `summary`, `date`, `image`, `authors`, `eyebrow`, `meta`; `none` hides one, e.g. `date: none` for projects), `group` (`year`, `month`, `folder` or a field), `featured: 1` (hero item), `media`, `ratio`, `defaultImage`. Items use `title`, `description`, `date`, `image`, `authors` frontmatter; `draft: true` and `publish: false` pages are left out.
+
+**Never guess keys:** fetch https://flowershow.app/docs/reference/listings.md first. An invalid block renders a card listing the problems and valid keys.
 
 ---
 
