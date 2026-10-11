@@ -1,5 +1,11 @@
 # flowershow-skills
 
+## 1.6.0
+
+### Minor Changes
+
+- [#10](https://github.com/flowershow/skills/pull/10) [`8f35a6b`](https://github.com/flowershow/skills/commit/8f35a6bd340a46bfdc98a378347baeb710c0cffe) Thanks [@rufuspollock](https://github.com/rufuspollock)! - Make listing pages (blog indexes, grids, archives, team pages) in plain Markdown: the zero-config `blog/` folder, ` ```blog ` / ` ```list ` blocks and `layout: list`. `<List />` is now legacy.
+
 ## 1.5.0
 
 ### Minor Changes
