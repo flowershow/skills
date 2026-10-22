@@ -1,5 +1,13 @@
 # flowershow-skills
 
+## 1.6.0
+
+### Minor Changes
+
+- [#12](https://github.com/flowershow/skills/pull/12) [`ba82ef8`](https://github.com/flowershow/skills/commit/ba82ef82331b0ef3a9aa8374f7c40a287f7f82a7) Thanks [@rufuspollock](https://github.com/rufuspollock)! - Install Flowershow as a plugin in Claude Code, Cursor and Codex (skill plus the Flowershow MCP connector), download the skill as `flowershow.zip` from each release, and trigger the skill on "publish this", "put this online" and "share this as a website".
+
+- [#10](https://github.com/flowershow/skills/pull/10) [`8f35a6b`](https://github.com/flowershow/skills/commit/8f35a6bd340a46bfdc98a378347baeb710c0cffe) Thanks [@rufuspollock](https://github.com/rufuspollock)! - Make listing pages (blog indexes, grids, archives, team pages) in plain Markdown: the zero-config `blog/` folder, ` ```blog ` / ` ```list ` blocks and `layout: list`. `<List />` is now legacy.
+
 ## 1.5.0
 
 ### Minor Changes
