@@ -27,7 +27,20 @@ mkdir -p ~/.agents/skills/flowershow && curl -fsSL https://raw.githubusercontent
 mkdir -p ~/.cursor/skills/flowershow && curl -fsSL https://raw.githubusercontent.com/flowershow/skills/main/SKILL.md -o ~/.cursor/skills/flowershow/SKILL.md
 ```
 
-For the Claude apps (claude.ai, desktop, mobile) and ChatGPT, upload the skill in the app's skills settings. See [flowershow.app/docs/agents/supported-agents](https://flowershow.app/docs/agents/supported-agents) for per-agent steps.
+For the Claude apps (claude.ai, desktop, mobile) and ChatGPT, download [flowershow.zip](https://github.com/flowershow/skills/releases/latest/download/flowershow.zip) and upload it in the app's skills settings. See [flowershow.app/docs/agents/supported-agents](https://flowershow.app/docs/agents/supported-agents) for per-agent steps.
+
+**As a plugin** (skill plus the Flowershow MCP connector):
+
+```bash
+# Claude Code
+/plugin install flowershow --marketplace flowershow/skills
+# or: claude plugin marketplace add flowershow/skills && claude plugin install flowershow@flowershow
+
+# Codex
+codex plugin marketplace add flowershow/skills
+```
+
+The repo carries manifests for Claude Code (`.claude-plugin/`), Cursor (`.cursor-plugin/`) and Codex (`.codex-plugin/`, `.agents/plugins/`). The root `SKILL.md` is canonical; `skills/flowershow/SKILL.md` is a copy kept in sync by `scripts/sync-skill-version.mjs` (CI fails if they drift).
 
 **Optional, if you already use Node.js:** `npx skills add flowershow/skills --global` installs it for every agent it detects (add `-y -a claude-code -a codex -a cursor` to skip the prompts).
 
@@ -44,4 +57,4 @@ Once installed, your assistant can:
 
 ## Releasing
 
-Add a changeset with `npx changeset` in your PR. On merge, the release workflow opens a "version" PR that bumps `package.json`, the `metadata.version` in `SKILL.md` and `CHANGELOG.md`.
+Add a changeset with `npx changeset` in your PR. On merge, the release workflow opens a "version" PR that bumps `package.json`, the `metadata.version` in `SKILL.md`, the plugin manifests and `CHANGELOG.md`, and refreshes `skills/flowershow/SKILL.md`. When the version PR merges, the release gets `flowershow.zip` attached.

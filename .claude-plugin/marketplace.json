@@ -1,0 +1,13 @@
+{
+  "name": "flowershow",
+  "owner": { "name": "Flowershow", "url": "https://flowershow.app" },
+  "description": "Flowershow plugins: publish from your AI session to a live website.",
+  "plugins": [
+    {
+      "name": "flowershow",
+      "source": "./",
+      "description": "Publish Markdown, HTML pages, notes and docs from your AI session as a live website.",
+      "category": "productivity"
+    }
+  ]
+}

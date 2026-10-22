@@ -1,0 +1,34 @@
+{
+  "name": "flowershow",
+  "version": "1.5.0",
+  "description": "Publish what you made in an AI session as a live website: Markdown, HTML pages, notes and docs, with or without an account.",
+  "author": {
+    "name": "Flowershow",
+    "url": "https://flowershow.app"
+  },
+  "homepage": "https://flowershow.app",
+  "repository": "https://github.com/flowershow/skills",
+  "license": "MIT",
+  "keywords": [
+    "publish",
+    "website",
+    "markdown",
+    "html",
+    "hosting"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Flowershow",
+    "shortDescription": "Publish to a live website",
+    "longDescription": "Turn what you made in this session into a live website. Ask Codex to publish this, put this online, or share this as a website: Flowershow publishes Markdown, HTML pages (reports, dashboards, one-pagers), notes and docs and gives you a URL. No account needed to start; claim the site to keep it. Also configures existing sites (custom domain, CSS, comments, search).",
+    "developerName": "Flowershow",
+    "category": "Productivity",
+    "capabilities": [],
+    "websiteURL": "https://flowershow.app",
+    "privacyPolicyURL": "https://flowershow.app/privacy",
+    "termsOfServiceURL": "https://flowershow.app/terms-of-service",
+    "composerIcon": "./assets/logo.png",
+    "logo": "./assets/logo.png"
+  }
+}

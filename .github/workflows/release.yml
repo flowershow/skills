@@ -27,6 +27,7 @@ jobs:
         run: npm ci
 
       - name: Create Version Pull Request
+        id: changesets
         uses: changesets/action@v1
         with:
           version: npm run version
@@ -35,3 +36,15 @@ jobs:
           title: "chore: version flowershow skills"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Attach flowershow.zip (the skill folder) to the new release, for uploading
+      # the skill in claude.ai / Claude Desktop / ChatGPT. Stable download link:
+      # https://github.com/flowershow/skills/releases/latest/download/flowershow.zip
+      - name: Attach skill bundle to release
+        if: steps.changesets.outputs.published == 'true'
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          (cd skills && zip -r ../flowershow.zip flowershow)
+          gh release upload "v${VERSION}" flowershow.zip --clobber
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

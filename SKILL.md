@@ -1,6 +1,6 @@
 ---
 name: flowershow
-description: Help users publish and manage Flowershow sites. Use when the user wants to publish Markdown, HTML pages (reports, dashboards, AI-generated pages), notes, a digital garden, or documents (docx, pdf, pptx, converted to Markdown first) as a website, or when they want to add a blog or listing page (blog index, project grid, archive, team page), or configure their site (config.json, custom CSS, custom domain, comments, search, etc.), regardless of how they publish — via the fl CLI, a GitHub repository, or the Obsidian plugin.
+description: Publish files as a live website with Flowershow and get a shareable URL. Use when the user says "publish this", "put this online", "share this as a website", "make this a webpage", "host this", "give me a link to this" or "update my site", or wants to publish Markdown, HTML pages (reports, dashboards, one-pagers made in this session), notes, a digital garden, or documents (docx, pdf, pptx, converted to Markdown first) as a website, with or without an account. Also use to add a blog or listing page (blog index, project grid, archive, team page) or configure a site (config.json, custom CSS, custom domain, comments, search), however they publish: the fl CLI, the Flowershow connector (MCP), a GitHub repository, or the Obsidian plugin.
 metadata:
   author: flowershow
   version: "1.5.0"

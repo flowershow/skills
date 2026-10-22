@@ -1,0 +1,21 @@
+{
+  "name": "flowershow",
+  "description": "Publish what you made in an AI session as a live website: Markdown, HTML pages, notes and docs, with or without an account.",
+  "version": "1.5.0",
+  "author": {
+    "name": "Flowershow"
+  },
+  "homepage": "https://flowershow.app",
+  "repository": "https://github.com/flowershow/skills",
+  "license": "MIT",
+  "keywords": [
+    "publish",
+    "website",
+    "markdown",
+    "html",
+    "hosting"
+  ],
+  "logo": "assets/logo.png",
+  "skills": "./skills/",
+  "mcpServers": "./mcp.json"
+}
