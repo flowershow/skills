@@ -23,7 +23,7 @@
   "mcpServers": "./.mcp.json",
   "icon": "./assets/logo.png",
   "documentationUrl": "https://flowershow.app/docs/agents/skills",
-  "supportUrl": "https://github.com/flowershow/flowershow/issues",
+  "supportUrl": "https://flowershow.app/support",
   "privacyPolicyUrl": "https://flowershow.app/privacy",
   "termsOfServiceUrl": "https://flowershow.app/terms-of-service"
 }
