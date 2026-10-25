@@ -1,5 +1,11 @@
 # flowershow-skills
 
+## 1.6.1
+
+### Patch Changes
+
+- [`8ab15f7`](https://github.com/flowershow/skills/commit/8ab15f7bdd28633c601ea653f8f3a4bc66eea28f) Thanks [@olayway](https://github.com/olayway)! - Fix the SKILL.md description so its YAML frontmatter parses again. A `: ` inside the unquoted description made `npx skills add flowershow/skills` find no skills.
+
 ## 1.6.0
 
 ### Minor Changes
