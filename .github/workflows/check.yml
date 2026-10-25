@@ -16,3 +16,7 @@ jobs:
         with:
           node-version: 22
       - run: node scripts/sync-skill-version.mjs --check
+      - name: Skill installs with the skills CLI
+        run: npx -y skills add . --list
+        env:
+          DISABLE_TELEMETRY: '1'
