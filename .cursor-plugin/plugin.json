@@ -1,7 +1,7 @@
 {
   "name": "flowershow",
   "description": "Publish what you made in an AI session as a live website: Markdown, HTML pages, notes and docs, with or without an account.",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "author": {
     "name": "Flowershow"
   },
