@@ -27,6 +27,31 @@ If it's not obvious from context, ask: *"Do you publish from a local folder usin
 
 **Can't run `fl`?** In chat apps such as claude.ai and ChatGPT, the sandbox often has no network access, so `fl` can't install or publish. If the Flowershow connector is available to you (a `publish` tool from Flowershow), use it instead: it publishes the files you pass and returns a live URL and a claim link, with no account needed. Paste both links to the user verbatim. If it isn't available, tell the user they can add it in their app's connector settings with the URL `https://flowershow.app/api/mcp` (beta, see https://flowershow.app/docs/agents/mcp), or prepare the files for them to publish with `fl` themselves.
 
+## Before every publish: list the files and wait for a yes
+
+Anyone with the link can read what you publish. Before **every** publish call, show the user the exact files that will go out and wait for them to say yes. "Every" means every `fl` publish (first publish or update, with or without `--anon`) and every connector `publish` call, including republishing after your own edits.
+
+1. **Work out the file list.**
+   - A folder with `fl`: it uploads every file except its built-in ignores and anything matched by a `.gitignore` in the folder. List what it will send, then drop any paths that `.gitignore` matches:
+     ```bash
+     find ./my-report \( -name .git -o -name node_modules -o -name .cache -o -name dist -o -name build -o -name .next -o -name .vercel -o -name .turbo -o -name coverage -o -name .nyc_output \) -prune -o -type f ! -name .gitignore ! -name .flowershow ! -name .DS_Store ! -name Thumbs.db ! -name .env ! -name '.env.*' ! -name '*.log' -print | sort
+     ```
+   - Single files with `fl`: the files you name.
+   - The connector: every `path` in the `files` you'll pass, plus any paths in `delete`.
+2. **Show the whole list** and say which site it goes to (a new site, or the existing one it updates). Say what will be removed: an update syncs the whole folder, so files deleted locally are deleted from the site, and `--overwrite` or `replaceWholeSite` removes everything not in the list. Point out anything that looks private, such as drafts, personal notes, keys, or data with names or emails.
+3. **Ask and stop**, e.g. *"These 6 files will be public at q3-report-maya.flowershow.me. Publish them?"* Don't publish in the same turn as the question.
+4. **Publish only after an explicit yes** ("yes", "go ahead", "publish"). If the user adds or removes files, or anything changes after they said yes (you edit, add or rename a file), show the new list and ask again.
+
+`--yes` only skips `fl`'s site-name prompt. It is not the user's confirmation.
+
+| Thought | Reality |
+|---------|---------|
+| "They said 'just publish it' and they're in a hurry" | Asking takes one message. A private file, once published, can't be taken back. |
+| "Nothing here looks sensitive" | You can't tell what the user considers private. Show the list anyway. |
+| "It's only an update to a site they already have" | An update also sends every new file in the folder. List them. |
+| "I'll report what was published afterwards" | That's too late. The list comes before the publish call. |
+| "I already asked about the one risky file" | One question about one file isn't the list. Show every file. |
+
 ---
 
 ## CLI only — skip for GitHub/Obsidian users
