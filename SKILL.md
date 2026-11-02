@@ -27,30 +27,28 @@ If it's not obvious from context, ask: *"Do you publish from a local folder usin
 
 **Can't run `fl`?** In chat apps such as claude.ai and ChatGPT, the sandbox often has no network access, so `fl` can't install or publish. If the Flowershow connector is available to you (a `publish` tool from Flowershow), use it instead: it publishes the files you pass and returns a live URL and a claim link, with no account needed. Paste both links to the user verbatim. If it isn't available, tell the user they can add it in their app's connector settings with the URL `https://flowershow.app/api/mcp` (beta, see https://flowershow.app/docs/agents/mcp), or prepare the files for them to publish with `fl` themselves.
 
-## Before every publish: list the files and wait for a yes
+## Every publish: show the file list
 
-Anyone with the link can read what you publish. Before **every** publish call, show the user the exact files that will go out and wait for them to say yes. "Every" means every `fl` publish (first publish or update, with or without `--anon`) and every connector `publish` call, including republishing after your own edits.
+Anyone with the link can read what you publish, so the user should always see what goes out. With every `fl` publish (first publish or update, with or without `--anon`) and every connector `publish` call, tell the user in the same message which files you are publishing, which site they go to (a new site, or the one being updated) and anything the publish will remove. Then publish. Don't add a confirmation step the user didn't ask for. Users who are asked every time just click through.
 
-1. **Work out the file list.**
-   - A folder with `fl`: it uploads every file except its built-in ignores and anything matched by a `.gitignore` in the folder. List what it will send, then drop any paths that `.gitignore` matches:
-     ```bash
-     find ./my-report \( -name .git -o -name node_modules -o -name .cache -o -name dist -o -name build -o -name .next -o -name .vercel -o -name .turbo -o -name coverage -o -name .nyc_output \) -prune -o -type f ! -name .gitignore ! -name .flowershow ! -name .DS_Store ! -name Thumbs.db ! -name .env ! -name '.env.*' ! -name '*.log' -print | sort
-     ```
-   - Single files with `fl`: the files you name.
-   - The connector: every `path` in the `files` you'll pass, plus any paths in `delete`.
-2. **Show the whole list** and say which site it goes to (a new site, or the existing one it updates). Say what will be removed: an update syncs the whole folder, so files deleted locally are deleted from the site, and `--overwrite` or `replaceWholeSite` removes everything not in the list. Point out anything that looks private, such as drafts, personal notes, keys, or data with names or emails.
-3. **Ask and stop**, e.g. *"These 6 files will be public at q3-report-maya.flowershow.me. Publish them?"* Don't publish in the same turn as the question.
-4. **Publish only after an explicit yes** ("yes", "go ahead", "publish"). If the user adds or removes files, or anything changes after they said yes (you edit, add or rename a file), show the new list and ask again.
+**Work out the file list:**
+- A folder with `fl`: it uploads every file except its built-in ignores and anything matched by a `.gitignore` in the folder. List what it will send, then drop any paths that `.gitignore` matches:
+  ```bash
+  find ./my-report \( -name .git -o -name node_modules -o -name .cache -o -name dist -o -name build -o -name .next -o -name .vercel -o -name .turbo -o -name coverage -o -name .nyc_output \) -prune -o -type f ! -name .gitignore ! -name .flowershow ! -name .DS_Store ! -name Thumbs.db ! -name .env ! -name '.env.*' ! -name '*.log' -print | sort
+  ```
+- Single files with `fl`: the files you name.
+- The connector: every `path` in the `files` you'll pass, plus any paths in `delete`.
 
-`--yes` only skips `fl`'s site-name prompt. It is not the user's confirmation.
+**Stop and ask first only when one of these is true**, and say which one:
 
-| Thought | Reality |
-|---------|---------|
-| "They said 'just publish it' and they're in a hurry" | Asking takes one message. A private file, once published, can't be taken back. |
-| "Nothing here looks sensitive" | You can't tell what the user considers private. Show the list anyway. |
-| "It's only an update to a site they already have" | An update also sends every new file in the folder. List them. |
-| "I'll report what was published afterwards" | That's too late. The list comes before the publish call. |
-| "I already asked about the one risky file" | One question about one file isn't the list. Show every file. |
+1. **A file looks private or sensitive**: drafts, personal notes or journals, keys and credentials, or data with people's names, emails or salaries. Ask even if the user said "go ahead", unless they named that file themselves.
+2. **The publish will delete files from the site**: `--overwrite`, `replaceWholeSite`, paths in `delete`, or files you know were removed from a linked folder (an update deletes them from the site). Don't ask if the user asked for those removals.
+3. **It's a first publish to a new public URL and the user hasn't asked to publish**, e.g. you are about to publish as one step of a bigger task.
+4. **The files differ from what the user asked for**: the folder holds files beyond the ones they mentioned or you made for them, or you renamed, added or left out files.
+
+If the user's request already names the files or says to publish ("publish ./q3-report", "push the update", "put it online"), that is the yes for 3 and 4. When you do ask, give the list, the reason and your recommendation in one message, e.g. *"`data/salaries-draft.csv` looks private. Publish the other 4 files to q3-report-maya.flowershow.me and leave it out?"*
+
+`--yes` only skips `fl`'s site-name prompt. It never stands in for asking the user when one of the cases above applies.
 
 ---
 
