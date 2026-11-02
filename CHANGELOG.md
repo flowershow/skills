@@ -1,5 +1,11 @@
 # flowershow-skills
 
+## 1.7.0
+
+### Minor Changes
+
+- [#14](https://github.com/flowershow/skills/pull/14) [`aae5565`](https://github.com/flowershow/skills/commit/aae5565c8a2252abe0ba00c9f32251a06dca7c1d) Thanks [@rufuspollock](https://github.com/rufuspollock)! - With every publish (first publish, update, `--anon` or the connector), the skill tells the user which files are going out, to which site, and what will be removed. It stops to ask first only when a file looks private, the publish would delete files, it is a first publish the user hasn't asked for, or the files differ from what the user asked for.
+
 ## 1.6.1
 
 ### Patch Changes
