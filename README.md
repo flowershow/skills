@@ -48,7 +48,7 @@ The repo carries manifests for Claude Code (`.claude-plugin/`), Cursor (`.cursor
 
 Once installed, your assistant can:
 
-- Show you every file it will publish, and wait for your yes, before any publish or update (first publish, update, `--anon` or the connector)
+- Tell you which files it is publishing, where to, and anything it will remove, every time it publishes; it stops to ask only when something looks private, files would be deleted, or the files aren't what you asked for
 - Install and log in to the `fl` CLI, then publish a folder or file, list, update, and delete sites
 - Publish without an account (`fl --anon`) when you just want a link now, and hand you the claim link
 - Publish HTML pages as-is (with their CSS, JS and data files) alongside Markdown
