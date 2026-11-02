@@ -27,6 +27,29 @@ If it's not obvious from context, ask: *"Do you publish from a local folder usin
 
 **Can't run `fl`?** In chat apps such as claude.ai and ChatGPT, the sandbox often has no network access, so `fl` can't install or publish. If the Flowershow connector is available to you (a `publish` tool from Flowershow), use it instead: it publishes the files you pass and returns a live URL and a claim link, with no account needed. Paste both links to the user verbatim. If it isn't available, tell the user they can add it in their app's connector settings with the URL `https://flowershow.app/api/mcp` (beta, see https://flowershow.app/docs/agents/mcp), or prepare the files for them to publish with `fl` themselves.
 
+## Every publish: show the file list
+
+Anyone with the link can read what you publish, so the user should always see what goes out. With every `fl` publish (first publish or update, with or without `--anon`) and every connector `publish` call, tell the user in the same message which files you are publishing, which site they go to (a new site, or the one being updated) and anything the publish will remove. Then publish. Don't add a confirmation step the user didn't ask for. Users who are asked every time just click through.
+
+**Work out the file list:**
+- A folder with `fl`: it uploads every file except its built-in ignores and anything matched by a `.gitignore` in the folder. List what it will send, then drop any paths that `.gitignore` matches:
+  ```bash
+  find ./my-report \( -name .git -o -name node_modules -o -name .cache -o -name dist -o -name build -o -name .next -o -name .vercel -o -name .turbo -o -name coverage -o -name .nyc_output \) -prune -o -type f ! -name .gitignore ! -name .flowershow ! -name .DS_Store ! -name Thumbs.db ! -name .env ! -name '.env.*' ! -name '*.log' -print | sort
+  ```
+- Single files with `fl`: the files you name.
+- The connector: every `path` in the `files` you'll pass, plus any paths in `delete`.
+
+**Stop and ask first only when one of these is true**, and say which one:
+
+1. **A file looks private or sensitive**: drafts, personal notes or journals, keys and credentials, or data with people's names, emails or salaries. Ask even if the user said "go ahead", unless they named that file themselves.
+2. **The publish will delete files from the site**: `--overwrite`, `replaceWholeSite`, paths in `delete`, or files you know were removed from a linked folder (an update deletes them from the site). Don't ask if the user asked for those removals.
+3. **It's a first publish to a new public URL and the user hasn't asked to publish**, e.g. you are about to publish as one step of a bigger task.
+4. **The files differ from what the user asked for**: the folder holds files beyond the ones they mentioned or you made for them, or you renamed, added or left out files.
+
+If the user's request already names the files or says to publish ("publish ./q3-report", "push the update", "put it online"), that is the yes for 3 and 4. When you do ask, give the list, the reason and your recommendation in one message, e.g. *"`data/salaries-draft.csv` looks private. Publish the other 4 files to q3-report-maya.flowershow.me and leave it out?"*
+
+`--yes` only skips `fl`'s site-name prompt. It never stands in for asking the user when one of the cases above applies.
+
 ---
 
 ## CLI only — skip for GitHub/Obsidian users
