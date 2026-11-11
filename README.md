@@ -60,7 +60,7 @@ Once installed, your assistant can:
 
 The plugin has no hooks, scripts or bundled code. It contains the skill's instructions and one MCP server reference. Everything it sends goes to Flowershow, and only when you ask to publish:
 
-- **Flowershow connector** (plugin only): `.mcp.json` adds the remote MCP server `https://flowershow.app/api/mcp`. Its `publish` tool uploads the files you ask your assistant to publish to Flowershow, which serves them as a public website. Sites published without an account get a random address and a claim link, and expire after 7 days unless claimed.
+- **Flowershow connector** (plugin only): `.mcp.json` adds the remote MCP server `https://flowershow.app/api/mcp`. Its `publish` tool uploads the files you ask your assistant to publish to Flowershow, which serves them as a public website. Sites published without an account get a random address and a claim link, and expire after 7 days unless claimed. The connector asks you to sign in to Flowershow when you want to keep a site or work with your sites (`list-sites`, `list-files`, `read-file`, `claim-site`).
 - **`fl` CLI**: when the agent has a terminal, the skill installs `fl` from the [flowershow/flowershow](https://github.com/flowershow/flowershow) GitHub releases (via `apps/cli/install.sh`) and runs it to publish the folder or file you choose to flowershow.app. `fl login` signs in through cloud.flowershow.app in your browser.
 - **Docs**: the skill fetches pages from `https://flowershow.app/docs` (`.md` versions) to look up configuration details.
 
