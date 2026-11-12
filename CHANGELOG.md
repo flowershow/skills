@@ -1,5 +1,13 @@
 # flowershow-skills
 
+## 1.7.1
+
+### Patch Changes
+
+- [#19](https://github.com/flowershow/skills/pull/19) [`eccd6a0`](https://github.com/flowershow/skills/commit/eccd6a027abc7d15b181e0d25939f0987b72966f) Thanks [@olayway](https://github.com/olayway)! - Move the Claude Code plugin to `plugins/flowershow/`, a folder with only the skill, the MCP server reference, the logo and a README, so it passes Anthropic's plugin directory policy (no package.json, lockfile or scripts). The marketplace now points there; install commands are unchanged.
+
+- [#16](https://github.com/flowershow/skills/pull/16) [`c2ad261`](https://github.com/flowershow/skills/commit/c2ad261f07fbaf30ced69d4b995a4e1a5c576012) Thanks [@olayway](https://github.com/olayway)! - Point chat apps to the signed-in Flowershow connector (`https://flowershow.app/api/mcp/account`) for publishing to the user's account, keep `https://flowershow.app/api/mcp` for trying it without an account, and drop the "beta" label.
+
 ## 1.7.0
 
 ### Minor Changes
