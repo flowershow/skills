@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "flowershow": {
+      "type": "http",
+      "url": "https://flowershow.app/api/mcp"
+    }
+  }
+}
