@@ -3,9 +3,10 @@
 // - copies package.json's version into SKILL.md's metadata.version and the plugin manifests
 // - copies the root SKILL.md (canonical) to skills/flowershow/SKILL.md, where the
 //   Cursor and Codex plugin formats look for skills
-// - copies SKILL.md, .mcp.json and the logo into plugins/flowershow/, the Claude Code
-//   plugin. It lives in its own folder because Anthropic's directory reviews the
-//   submitted folder and refuses package.json, lockfiles and scripts in it.
+// - copies SKILL.md, the logo and .mcp.json (without its OpenAI `extensions`, a field
+//   Anthropic's directory refuses) into plugins/flowershow/, the Claude Code plugin. It
+//   lives in its own folder because Anthropic's directory reviews the submitted folder
+//   and refuses package.json, lockfiles and scripts in it.
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
 
@@ -18,7 +19,7 @@ const MANIFESTS = [
   '.codex-plugin/plugin.json',
 ];
 const SKILL_COPIES = ['skills/flowershow/SKILL.md', `${CLAUDE_PLUGIN}/skills/flowershow/SKILL.md`];
-const FILE_COPIES = ['.mcp.json', 'assets/logo.png'];
+const FILE_COPIES = ['assets/logo.png'];
 const stale = [];
 
 function sync(path, next) {
@@ -42,6 +43,10 @@ if (updated === skill && !skill.includes(`version: "${version}"`)) {
 sync('SKILL.md', updated);
 for (const path of SKILL_COPIES) sync(path, updated);
 for (const path of FILE_COPIES) sync(`${CLAUDE_PLUGIN}/${path}`, readFileSync(path));
+
+const mcp = JSON.parse(readFileSync('.mcp.json', 'utf8'));
+for (const server of Object.values(mcp.mcpServers)) delete server.extensions;
+sync(`${CLAUDE_PLUGIN}/.mcp.json`, `${JSON.stringify(mcp, null, 2)}\n`);
 
 for (const path of MANIFESTS) {
   const json = JSON.parse(readFileSync(path, 'utf8'));

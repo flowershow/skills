@@ -2,7 +2,12 @@
   "mcpServers": {
     "flowershow": {
       "type": "http",
-      "url": "https://flowershow.app/api/mcp"
+      "url": "https://flowershow.app/api/mcp",
+      "extensions": {
+        "com.openai": {
+          "auth": { "type": "mixed" }
+        }
+      }
     }
   }
 }

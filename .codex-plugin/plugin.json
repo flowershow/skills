@@ -4,6 +4,7 @@
   "description": "Publish what you made in an AI session as a live website: Markdown, HTML pages, notes and docs, with or without an account.",
   "author": {
     "name": "Flowershow",
+    "email": "support@flowershow.app",
     "url": "https://flowershow.app"
   },
   "homepage": "https://flowershow.app",
@@ -21,14 +22,84 @@
   "interface": {
     "displayName": "Flowershow",
     "shortDescription": "Publish to a live website",
-    "longDescription": "Turn what you made in this session into a live website. Ask Codex to publish this, put this online, or share this as a website: Flowershow publishes Markdown, HTML pages (reports, dashboards, one-pagers), notes and docs and gives you a URL. No account needed to start; claim the site to keep it. Also configures existing sites (custom domain, CSS, comments, search).",
+    "longDescription": "Flowershow turns what you made with ChatGPT or Codex into a live website. Ask to \"publish this\", \"put this online\" or \"share this as a website\", and it publishes the page or small site and gives you a link to share.\n\nPublish reports, one-pagers, dashboards and other HTML pages exactly as written, or Markdown notes and documents with a clean theme. Ask for changes in the same conversation and they go live at the same address.\n\nNo account is needed to start. Each new site gets a random address and a claim link, and expires after 7 days unless you keep it. Sign in to Flowershow from the conversation to keep a site in your account, publish straight to your account, and list, read and update your existing sites in later conversations. Published sites are public. Each publish takes up to 50 files and 3 MB; in Codex, larger sites can be published with the Flowershow command line tool.",
     "developerName": "Flowershow",
     "category": "Productivity",
-    "capabilities": [],
+    "capabilities": [
+      "Publish HTML and Markdown as a website",
+      "Update a site published in the same conversation",
+      "Keep a site in your Flowershow account",
+      "List, read and update the sites in your account"
+    ],
     "websiteURL": "https://flowershow.app",
+    "supportURL": "https://flowershow.app/support",
     "privacyPolicyURL": "https://flowershow.app/privacy",
     "termsOfServiceURL": "https://flowershow.app/terms-of-service",
+    "defaultPrompt": [
+      "Publish this as a webpage",
+      "Put this report online so I can share it",
+      "Update the page you published with these changes"
+    ],
     "composerIcon": "./assets/logo.png",
     "logo": "./assets/logo.png"
+  },
+  "extensions": {
+    "com.openai": {
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Publish a single HTML page without an account",
+              "prompt": "Make a one-page HTML announcement for a bakery opening this Saturday at 9am, with a short menu, and publish it.",
+              "tools_triggered": "publish",
+              "expected_behavior": "Before signing in. Calls publish once with an index.html file and says which file it is sending. Replies with a live https://…-anon.flowershow.me link that shows the page, and a claim link with a note that the site expires in 7 days unless kept."
+            },
+            {
+              "description": "Update the site in the same conversation",
+              "prompt": "Change the opening day to Sunday and republish it.",
+              "tools_triggered": "publish",
+              "expected_behavior": "Run after the first case in the same conversation. Calls publish with the siteId and claimToken from the first publish and the changed index.html. The same URL now shows Sunday."
+            },
+            {
+              "description": "Keep the site in a Flowershow account (sign-in)",
+              "prompt": "I want to keep this site. Save it to my Flowershow account.",
+              "tools_triggered": "claim-site",
+              "expected_behavior": "Run after the second case in the same conversation. ChatGPT asks the reviewer to connect Flowershow; sign in with the reviewer account. Calls claim-site with the siteId and claimToken. Replies that the site is now in the account and no longer expires; the bakery site appears in the account's site list."
+            },
+            {
+              "description": "Publish a small Markdown site to the account",
+              "prompt": "Write three short Markdown pages about houseplant care (watering, light, soil) plus a home page that links to them, and publish them as a website.",
+              "tools_triggered": "publish",
+              "expected_behavior": "Signed in. Calls publish once with four .md files and no siteId, creating a new site in the account (no claim link). The live link shows a themed site whose home page links to the three pages, and each link opens."
+            },
+            {
+              "description": "Update an existing site in a new conversation",
+              "prompt": "Add an FAQ page to my bakery site and link to it from the home page.",
+              "tools_triggered": "list-sites, list-files, read-file, publish",
+              "expected_behavior": "New conversation, signed in. Calls list-sites to find the bakery site, list-files and read-file to get the current index.html, then publish with that siteId, a new faq.html and the updated index.html. The site's URL is unchanged, the home page links to the FAQ, and the rest of the home page is as before."
+            }
+          ],
+          "negative": [
+            {
+              "description": "No publishing requested: the plugin should not act. Expected: answers normally with no Flowershow tool call.",
+              "prompt": "Write a short poem about autumn."
+            },
+            {
+              "description": "Deleting a whole site is not supported: no tool call. Expected: explains that an unclaimed site expires after 7 days, and a site in the account can be deleted from the Flowershow dashboard.",
+              "prompt": "Delete the website you just published."
+            },
+            {
+              "description": "Publishing somewhere other than Flowershow is out of scope. Expected: no Flowershow tool call; says Flowershow can't post to WordPress and offers to publish the post as a Flowershow page instead, without doing so unasked.",
+              "prompt": "Post this announcement to my WordPress blog: we're closed on Monday for a staff day."
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "Flowershow does not sell products or process payments in ChatGPT or Codex."
+      },
+      "publication": {
+        "release_notes": "First directory release: publish HTML pages and Markdown as a live website without an account, update it in the same conversation, sign in to keep it, and list, read and update the sites in your Flowershow account."
+      }
+    }
   }
 }
