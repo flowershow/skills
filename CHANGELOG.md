@@ -1,5 +1,13 @@
 # flowershow-skills
 
+## 1.7.2
+
+### Patch Changes
+
+- [#18](https://github.com/flowershow/skills/pull/18) [`fa43439`](https://github.com/flowershow/skills/commit/fa43439429f3c976cb72c9c868a089c907861356) Thanks [@olayway](https://github.com/olayway)! - Point chat apps to one Flowershow connector URL (`https://flowershow.app/api/mcp`): it publishes without an account and asks the user to sign in when they want to keep a site or update their sites. Replaces `https://flowershow.app/api/mcp/account`, which no longer exists.
+
+- [#21](https://github.com/flowershow/skills/pull/21) [`c48b866`](https://github.com/flowershow/skills/commit/c48b866ffed0f15fa98f67c1b52f52aea39f4306) Thanks [@olayway](https://github.com/olayway)! - Prepare the plugin for OpenAI's plugin directory (ChatGPT and Codex): listing details, five positive and three negative review test cases and release notes in `.codex-plugin/plugin.json`, the connector's `mixed` auth (publish without an account, sign in for account tools) in `.mcp.json`, and a `flowershow-openai-plugin.zip` package on each release. The skill now mentions plans only when the user asks and links to the pricing page instead of walking them to billing.
+
 ## 1.7.1
 
 ### Patch Changes
