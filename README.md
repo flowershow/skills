@@ -40,7 +40,9 @@ For the Claude apps (claude.ai, desktop, mobile) and ChatGPT, download [flowersh
 codex plugin marketplace add flowershow/skills
 ```
 
-The repo carries manifests for Cursor (`.cursor-plugin/`) and Codex (`.codex-plugin/`, `.agents/plugins/`) at the root. The Claude Code plugin lives in [`plugins/flowershow/`](plugins/flowershow), listed by the root `.claude-plugin/marketplace.json`; it is a folder of its own so it holds only the plugin's Markdown, JSON and logo, which is what Anthropic's plugin directory accepts (submit that folder, not the repo root). The root `SKILL.md`, `.mcp.json` and `assets/logo.png` are canonical; `skills/flowershow/SKILL.md` and the copies in `plugins/flowershow/` are kept in sync by `scripts/sync-skill-version.mjs` (CI fails if they drift).
+The repo carries manifests for Cursor (`.cursor-plugin/`) and Codex (`.codex-plugin/`, `.agents/plugins/`) at the root. The Claude Code plugin lives in [`plugins/flowershow/`](plugins/flowershow), listed by the root `.claude-plugin/marketplace.json`; it is a folder of its own so it holds only the plugin's Markdown, JSON and logo, which is what Anthropic's plugin directory accepts (submit that folder, not the repo root). The root `SKILL.md`, `.mcp.json` and `assets/logo.png` are canonical; `skills/flowershow/SKILL.md` and the copies in `plugins/flowershow/` are kept in sync by `scripts/sync-skill-version.mjs` (CI fails if they drift). The Claude copy of `.mcp.json` leaves out the server's `extensions` (OpenAI's auth setting), which Anthropic's directory refuses.
+
+For OpenAI's plugin directory (ChatGPT and Codex), `.codex-plugin/plugin.json` carries the listing, review test cases and release notes under `interface` and `extensions.com.openai`, and `.mcp.json` declares the connector's auth as `mixed` (publish without an account, OAuth sign-in for account tools). Each release attaches `flowershow-openai-plugin.zip` (`.codex-plugin/`, `.mcp.json`, `skills/`, `assets/`) to upload at platform.openai.com/plugins.
 
 **Optional, if you already use Node.js:** `npx skills add flowershow/skills --global` installs it for every agent it detects (add `-y -a claude-code -a codex -a cursor` to skip the prompts).
 
@@ -68,4 +70,4 @@ Privacy policy: [flowershow.app/privacy](https://flowershow.app/privacy). Help: 
 
 ## Releasing
 
-Add a changeset with `npx changeset` in your PR. On merge, the release workflow opens a "version" PR that bumps `package.json`, the `metadata.version` in `SKILL.md`, the plugin manifests and `CHANGELOG.md`, and refreshes `skills/flowershow/SKILL.md`. When the version PR merges, the release gets `flowershow.zip` attached.
+Add a changeset with `npx changeset` in your PR. On merge, the release workflow opens a "version" PR that bumps `package.json`, the `metadata.version` in `SKILL.md`, the plugin manifests and `CHANGELOG.md`, and refreshes `skills/flowershow/SKILL.md`. When the version PR merges, the release gets `flowershow.zip` and `flowershow-openai-plugin.zip` attached. Before uploading a new OpenAI package, update `publication.release_notes` in `.codex-plugin/plugin.json`.

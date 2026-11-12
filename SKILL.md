@@ -254,7 +254,7 @@ This applies to:
 - **Custom domain** — requires adding DNS records at their domain registrar. Spell out exactly which record type (CNAME or A), the name/host value, and the target value to enter, and warn that DNS can take up to 48 hours to propagate.
 - **Password protection** — done entirely in the dashboard. Walk the user to the right settings page and tell them exactly which field to fill in.
 - **GitHub repository connection** — walk the user through the dashboard flow step by step.
-- **Billing / plan upgrades** — direct the user to the billing page and describe what they'll see.
+- **Plans and billing** — only when the user asks: say which plan a feature needs and link to https://flowershow.app/pricing; plan changes happen in the dashboard. Don't suggest upgrading unprompted.
 
 When in doubt, over-explain rather than under-explain. A user who already knows the steps can skip ahead; a user who doesn't will be stuck without guidance.
 

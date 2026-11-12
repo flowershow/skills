@@ -37,14 +37,19 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Attach flowershow.zip (the skill folder) to the new release, for uploading
-      # the skill in claude.ai / Claude Desktop / ChatGPT. Stable download link:
-      # https://github.com/flowershow/skills/releases/latest/download/flowershow.zip
-      - name: Attach skill bundle to release
+      # Attach to the new release:
+      # - flowershow.zip (the skill folder), for uploading the skill in claude.ai /
+      #   Claude Desktop / ChatGPT:
+      #   https://github.com/flowershow/skills/releases/latest/download/flowershow.zip
+      # - flowershow-openai-plugin.zip (Codex-format plugin package), for uploading at
+      #   platform.openai.com/plugins:
+      #   https://github.com/flowershow/skills/releases/latest/download/flowershow-openai-plugin.zip
+      - name: Attach skill bundle and OpenAI plugin package to release
         if: steps.changesets.outputs.published == 'true'
         run: |
           VERSION=$(node -p "require('./package.json').version")
           (cd skills && zip -r ../flowershow.zip flowershow)
-          gh release upload "v${VERSION}" flowershow.zip --clobber
+          zip -r -X flowershow-openai-plugin.zip .codex-plugin .mcp.json skills assets
+          gh release upload "v${VERSION}" flowershow.zip flowershow-openai-plugin.zip --clobber
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

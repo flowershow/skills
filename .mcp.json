@@ -5,7 +5,7 @@
       "url": "https://flowershow.app/api/mcp",
       "extensions": {
         "com.openai": {
-          "auth": { "type": "none" }
+          "auth": { "type": "mixed" }
         }
       }
     }
