@@ -40,7 +40,7 @@ For the Claude apps (claude.ai, desktop, mobile) and ChatGPT, download [flowersh
 codex plugin marketplace add flowershow/skills
 ```
 
-The repo carries manifests for Claude Code (`.claude-plugin/`), Cursor (`.cursor-plugin/`) and Codex (`.codex-plugin/`, `.agents/plugins/`). The root `SKILL.md` is canonical; `skills/flowershow/SKILL.md` is a copy kept in sync by `scripts/sync-skill-version.mjs` (CI fails if they drift).
+The repo carries manifests for Cursor (`.cursor-plugin/`) and Codex (`.codex-plugin/`, `.agents/plugins/`) at the root. The Claude Code plugin lives in [`plugins/flowershow/`](plugins/flowershow), listed by the root `.claude-plugin/marketplace.json`; it is a folder of its own so it holds only the plugin's Markdown, JSON and logo, which is what Anthropic's plugin directory accepts (submit that folder, not the repo root). The root `SKILL.md`, `.mcp.json` and `assets/logo.png` are canonical; `skills/flowershow/SKILL.md` and the copies in `plugins/flowershow/` are kept in sync by `scripts/sync-skill-version.mjs` (CI fails if they drift).
 
 **Optional, if you already use Node.js:** `npx skills add flowershow/skills --global` installs it for every agent it detects (add `-y -a claude-code -a codex -a cursor` to skip the prompts).
 

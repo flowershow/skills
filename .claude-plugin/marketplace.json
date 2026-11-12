@@ -5,7 +5,7 @@
   "plugins": [
     {
       "name": "flowershow",
-      "source": "./",
+      "source": "./plugins/flowershow",
       "description": "Publish Markdown, HTML pages, notes and docs from your AI session as a live website.",
       "category": "productivity"
     }
