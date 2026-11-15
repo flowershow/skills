@@ -50,21 +50,21 @@
           "positive": [
             {
               "description": "Publish a single HTML page without an account",
-              "prompt": "Make a one-page HTML announcement for a bakery opening this Saturday at 9am, with a short menu, and publish it.",
+              "prompt": "Make a one-page HTML announcement for a bakery opening this Saturday at 9am, with a short menu, and publish it. Details: the bakery is Crumb & Co., a neighbourhood sourdough bakery at 14 Mill Lane, Riverton. Opening day is this Saturday, 9am–4pm; the first 50 customers get a free coffee with any pastry, and there are free tastings all day. Menu: country sourdough loaf $8, butter croissant $4, cardamom bun $4.50, seasonal fruit tart $6, flat white $4. Regular hours after opening: Tuesday–Sunday, 7am–3pm. Make it a single index.html with the styling inside it (warm cream and brown colours, no external images). Don't ask me anything; if something is missing, make it up.",
               "tools_triggered": "publish",
               "expected_behavior": "Before signing in. Calls publish once with an index.html file and says which file it is sending. Replies with a live https://…-anon.flowershow.me link that shows the page, and a claim link with a note that the site expires in 7 days unless kept."
-            },
-            {
-              "description": "Update the site in the same conversation",
-              "prompt": "Change the opening day to Sunday and republish it.",
-              "tools_triggered": "publish",
-              "expected_behavior": "Run after the first case in the same conversation. Calls publish with the siteId and claimToken from the first publish and the changed index.html. The same URL now shows Sunday."
             },
             {
               "description": "Keep the site in a Flowershow account (sign-in)",
               "prompt": "I want to keep this site. Save it to my Flowershow account.",
               "tools_triggered": "claim-site",
-              "expected_behavior": "Run after the second case in the same conversation. ChatGPT asks the reviewer to connect Flowershow; sign in with the reviewer account. Calls claim-site with the siteId and claimToken. Replies that the site is now in the account and no longer expires; the bakery site appears in the account's site list."
+              "expected_behavior": "Run after the first case in the same conversation. ChatGPT asks the reviewer to connect Flowershow; sign in with the reviewer account. Calls claim-site with the siteId and claimToken from the first publish. Replies that the site is now in the account and no longer expires; the bakery site appears in the account's site list."
+            },
+            {
+              "description": "Update the kept site in the same conversation",
+              "prompt": "Change the opening day to Sunday and republish it.",
+              "tools_triggered": "publish",
+              "expected_behavior": "Run after the second case in the same conversation, signed in. Calls publish with the bakery siteId (no claimToken) and the changed index.html; it may call read-file first to get the current page. The same URL now shows Sunday, and the rest of the page is as before."
             },
             {
               "description": "Publish a small Markdown site to the account",
