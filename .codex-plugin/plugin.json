@@ -50,7 +50,7 @@
           "positive": [
             {
               "description": "Publish a single HTML page without an account",
-              "prompt": "Make a one-page HTML announcement for a bakery opening this Saturday at 9am, with a short menu, and publish it. Details: the bakery is Crumb & Co., a neighbourhood sourdough bakery at 14 Mill Lane, Riverton. Opening day is this Saturday, 9am–4pm; the first 50 customers get a free coffee with any pastry, and there are free tastings all day. Menu: country sourdough loaf $8, butter croissant $4, cardamom bun $4.50, seasonal fruit tart $6, flat white $4. Regular hours after opening: Tuesday–Sunday, 7am–3pm. Make it a single index.html with the styling inside it (warm cream and brown colours, no external images). Don't ask me anything; if something is missing, make it up.",
+              "prompt": "Make a one-page HTML announcement for a bakery opening this Saturday at 9am, with a short menu, and publish it with Flowershow. Details: the bakery is Crumb & Co., a neighbourhood sourdough bakery at 14 Mill Lane, Riverton. Opening day is this Saturday, 9am–4pm; the first 50 customers get a free coffee with any pastry, and there are free tastings all day. Menu: country sourdough loaf $8, butter croissant $4, cardamom bun $4.50, seasonal fruit tart $6, flat white $4. Regular hours after opening: Tuesday–Sunday, 7am–3pm. Make it a single index.html with the styling inside it (warm cream and brown colours, no external images). Don't ask me anything; if something is missing, make it up.",
               "tools_triggered": "publish",
               "expected_behavior": "Before signing in. Calls publish once with an index.html file and says which file it is sending. Replies with a live https://…-anon.flowershow.me link that shows the page, and a claim link with a note that the site expires in 7 days unless kept."
             },
@@ -68,13 +68,13 @@
             },
             {
               "description": "Publish a small Markdown site to the account",
-              "prompt": "Write three short Markdown pages about houseplant care (watering, light, soil) plus a home page that links to them, and publish them as a website.",
+              "prompt": "Write three short Markdown pages about houseplant care (watering, light, soil) plus a home page that links to them, and publish them as a website with Flowershow.",
               "tools_triggered": "publish",
               "expected_behavior": "Signed in. Calls publish once with four .md files and no siteId, creating a new site in the account (no claim link). The live link shows a themed site whose home page links to the three pages, and each link opens."
             },
             {
               "description": "Update an existing site in a new conversation",
-              "prompt": "Add an FAQ page to my bakery site and link to it from the home page.",
+              "prompt": "Add an FAQ page to my bakery site on Flowershow and link to it from the home page.",
               "tools_triggered": "list-sites, list-files, read-file, publish",
               "expected_behavior": "New conversation, signed in. Calls list-sites to find the bakery site, list-files and read-file to get the current index.html, then publish with that siteId, a new faq.html and the updated index.html. The site's URL is unchanged, the home page links to the FAQ, and the rest of the home page is as before."
             }
