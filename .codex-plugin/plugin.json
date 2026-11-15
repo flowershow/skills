@@ -85,12 +85,12 @@
               "prompt": "Write a short poem about autumn."
             },
             {
-              "description": "Deleting a whole site is not supported: no tool call. Expected: explains that an unclaimed site expires after 7 days, and a site in the account can be deleted from the Flowershow dashboard.",
+              "description": "Deleting a whole site is not supported: no tool call. Expected: says it can't delete the site from the chat and points to the Flowershow dashboard, where sites in the account can be deleted.",
               "prompt": "Delete the website you just published."
             },
             {
-              "description": "Publishing somewhere other than Flowershow is out of scope. Expected: no Flowershow tool call; says Flowershow can't post to WordPress and offers to publish the post as a Flowershow page instead, without doing so unasked.",
-              "prompt": "Post this announcement to my WordPress blog: we're closed on Monday for a staff day."
+              "description": "The user asks for a page but says not to publish it yet. Expected: shows the HTML in the chat and makes no Flowershow tool call; may offer to publish it with Flowershow once the user is ready.",
+              "prompt": "Draft a one-page HTML flyer for my bakery's Sunday market stall, but don't publish it yet. I want to check it first."
             }
           ]
         },
