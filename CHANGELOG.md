@@ -1,5 +1,11 @@
 # flowershow-skills
 
+## 1.7.3
+
+### Patch Changes
+
+- [#22](https://github.com/flowershow/skills/pull/22) [`57d567f`](https://github.com/flowershow/skills/commit/57d567f003f5797c9f6ca5735b6c115b1bb8e9d5) Thanks [@olayway](https://github.com/olayway)! - OpenAI review test cases: keep the bakery site (sign in and claim it) before editing it, and give the first case every detail of the bakery so ChatGPT builds the page without asking questions.
+
 ## 1.7.2
 
 ### Patch Changes
