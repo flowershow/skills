@@ -1,5 +1,11 @@
 # flowershow-skills
 
+## 1.7.4
+
+### Patch Changes
+
+- [#24](https://github.com/flowershow/skills/pull/24) [`5e0f1d5`](https://github.com/flowershow/skills/commit/5e0f1d501efb9f031e640416ecbfe43b18eb6edc) Thanks [@olayway](https://github.com/olayway)! - OpenAI review test cases: the prompts that create or find a site (bakery page, houseplant site, bakery FAQ) now name Flowershow, so ChatGPT reliably uses the plugin instead of answering in the chat.
+
 ## 1.7.3
 
 ### Patch Changes
